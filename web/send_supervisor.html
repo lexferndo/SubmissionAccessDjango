@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="padding: 10px;">
+    <table>
+        <tbody>
+            <tr>
+                <td style="font-weight: bold; padding: 10px;">Email</td>
+                <td style="padding: 10px;">:</td>
+                <td>{{ email_employee }}</td>
+            </tr>
+            {% for value in cluster %}
+            <tr>
+                <td style="font-weight: bold; padding: 10px;">Submission Cluster {{value.name}}</td>
+                <td style="padding: 10px;">:</td>
+                <td>
+                    {% for val in value.types %}
+                    <p style="margin: 0;">{{ val }}</p>
+                    {% endfor %}
+            </tr>
+            <tr>
+                <td style="font-weight: bold; padding: 10px;">Justification for Additional {{value.name}} Roles</td>
+                <td style="padding: 10px;">:</td>
+                <td>
+                    {{value.justif}}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="display: flex; align-items: center;">
+        <a href="http://localhost:8000{% url 'approval_supervisor' id=id types=1%}"
+            style="padding: 9px; border-radius: 5px; width: 30%; background-color: green; color: white; text-decoration: none; margin-right: 5px; text-align: center;">Accept</a>
+        <a href="http://localhost:8000{% url 'approval_supervisor' id=id types=0%}"
+            style="padding: 9px; border-radius: 5px; width: 30%; background-color: red; color: white; text-decoration: none; margin-left: 5px; text-align: center;">Decline</a>
+    </div>
+</body>
+</html>

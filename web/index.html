@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission New Access</title>
+    <script src="https://cdn.tailwindcss.com/3.4.0"></script>
+</head>
+
+<style>
+    .loader {
+        width: 10px;
+        padding: 8px;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        background: #ffffff;
+        --_m:
+            conic-gradient(#0000 10%, #000),
+            linear-gradient(#000 0 0) content-box;
+        -webkit-mask: var(--_m);
+        mask: var(--_m);
+        -webkit-mask-composite: source-out;
+        mask-composite: subtract;
+        animation: l3 1s infinite linear;
+    }
+
+    @keyframes l3 {
+        to {
+            transform: rotate(1turn)
+        }
+    }
+</style>
+
+<body class="bg-[#09263e] text-emerald-500">
+    <div class="px-40 py-24 grid gap-10">
+        <h1 class="text-3xl font-medium text-center">Form Pengajuan</h1>
+        <div class="grid gap-5">
+            <div class="flex flex-col gap-1">
+                <label for="employee" class="font-medium">Email Employee</label>
+                <input type="text" name="employee" id="employee" class="p-1.5 border border-gray-200 rounded-md"
+                    required>
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="supervisor" class="font-medium">Direct Supervisor</label>
+                <div class="flex items-center gap-2">
+                    <input type="radio" name="supervisor" id="supervisor" value="elshoes7@gmail.com">
+                    <label>miranda.rosely@sci.ui.ac.id</label>
+                </div>
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="cluster" class="font-medium">Cluster</label>
+                {% for value in cluster%}
+                <div class="flex items-center gap-2">
+                    <input type="radio" name="cluster" id="cluster" value="{{value}}" required>
+                    <label>{{value}}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="flex flex-col gap-1 additional-commercial-roles">
+                <label for="commercial" class="font-medium">Additional Commercial Roles
+                </label>
+                <div class="flex flex-col gap-2">
+                    {% for value in commercial%}
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" name="commercial" id="commercial" value="{{ value }}">
+                        <label>{{ value }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="hidden flex-col gap-1 justi-commercial">
+                <label for="justi_commercial" class="font-medium">Justification for Additional Commercial Roles</label>
+                <input type="text" name="justi_commercial" id="justi_commercial"
+                    class="p-1.5 border border-gray-200 rounded-md">
+            </div>
+
+            <div class="flex flex-col gap-1 additional-finance-roles">
+                <label for="finance" class="font-medium">Additional Finance Roles
+                </label>
+                <div class="flex flex-col gap-2">
+                    {% for value in finance%}
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" name="finance" id="finance" value="{{ value }}">
+                        <label>{{ value }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="hidden flex-col gap-1 justi-finance">
+                <label for="justi_finance" class="font-medium">Justification for Additional Finance Roles</label>
+                <input type="text" name="justi_finance" id="justi_finance"
+                    class="p-1.5 border border-gray-200 rounded-md">
+            </div>
+
+            <div class="flex flex-col gap-1 additional-operations-roles">
+                <label for="operation" class="font-medium">Additional Operations Roles
+                </label>
+                <div class="flex-col gap-2">
+                    {% for value in operation%}
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" name="operation" id="operation" value="{{ value }}">
+                        <label>{{ value }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="hidden flex-col gap-1 justi-operations">
+                <label for="justi_operation" class="font-medium">Justification for Additional Operations Roles</label>
+                <input type="text" name="justi_operation" id="justi_operation"
+                    class="p-1.5 border border-gray-200 rounded-md">
+            </div>
+
+            <div class="flex flex-col gap-1 additional-tech-roles">
+                <label for="tech" class="font-medium">Additional Tech Roles
+                </label>
+                <div class="flex flex-col gap-2">
+                    {% for value in tech%}
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" name="tech" id="tech" value="{{ value }}">
+                        <label>{{ value }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="hidden flex-col gap-1 justi-tech">
+                <label for="justi_tech" class="font-medium">Justification for Additional Tech Roles</label>
+                <input type="text" name="justi_tech" id="justi_tech" class="p-1.5 border border-gray-200 rounded-md">
+            </div>
+        </div>
+
+        <button id="button_submit" type="button" onclick="EntryData()"
+            class="p-2 bg-emerald-500/80 transtion-all duration-300 hover:bg-emerald-500 rounded-md w-full text-white font-medium">
+            Submit
+        </button>
+
+    </div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function handleCheckboxChange(checkboxSection, justificationSection, inputName) {
+        const checkboxes = document.querySelectorAll(`${checkboxSection} input[type="checkbox"]`);
+        const justification = document.querySelector(justificationSection);
+        const input = document.querySelector(`input[name="${inputName}"]`);
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                if (Array.from(checkboxes).some(chk => chk.checked)) {
+                    justification.classList.add('flex');
+                    justification.classList.remove('hidden');
+                    input.setAttribute('required', 'required');
+                } else {
+                    justification.classList.remove('flex');
+                    justification.classList.add('hidden');
+                    input.removeAttribute('required');
+                }
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        handleCheckboxChange('.additional-commercial-roles', '.justi-commercial', 'justi_commercial');
+        handleCheckboxChange('.additional-finance-roles', '.justi-finance', 'justi_finance');
+        handleCheckboxChange('.additional-operations-roles', '.justi-operations', 'justi_operation');
+        handleCheckboxChange('.additional-tech-roles', '.justi-tech', 'justi_tech');
+    });
+</script>
+
+<script>
+    function validateForm() {
+        const commercialChecked = document.querySelectorAll('.additional-commercial-roles input[type="checkbox"]:checked').length > 0;
+        const financeChecked = document.querySelectorAll('.additional-finance-roles input[type="checkbox"]:checked').length > 0;
+        const operationChecked = document.querySelectorAll('.additional-operations-roles input[type="checkbox"]:checked').length > 0;
+        const techChecked = document.querySelectorAll('.additional-tech-roles input[type="checkbox"]:checked').length > 0;
+
+        return commercialChecked || financeChecked || operationChecked || techChecked;
+    }
+
+    function EntryData() {
+        const employee = document.getElementById('employee').value
+        const supervisor = document.getElementById('supervisor').value
+        const cluster = document.getElementById('cluster').value
+
+        if (!employee || !supervisor || !cluster) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Please fill form!',
+                icon: 'error',
+            });
+            return;
+        }
+
+        if (!validateForm()) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Please select at least one role from commercial, finance, operation, or tech.',
+                icon: 'error',
+            });
+            return;
+        }
+
+
+        const commercial = []
+        const inputCommercial = document.getElementsByName('commercial')
+        for (let i = 0; i < inputCommercial.length; i++) {
+            if (inputCommercial[i].checked) {
+                commercial.push(inputCommercial[i].value)
+            }
+        }
+        const justi_commercial = document.getElementById('justi_commercial').value
+
+        const finance = []
+        const inputFinance = document.getElementsByName('finance')
+        for (let i = 0; i < inputFinance.length; i++) {
+            if (inputFinance[i].checked) {
+                finance.push(inputFinance[i].value)
+            }
+        }
+        const justi_finance = document.getElementById('justi_finance').value
+
+        const operation = []
+        const inputOperation = document.getElementsByName('operation')
+        for (let i = 0; i < inputOperation.length; i++) {
+            if (inputOperation[i].checked) {
+                operation.push(inputOperation[i].value)
+            }
+        }
+        const justi_operation = document.getElementById('justi_operation').value
+
+        const tech = []
+        const inputTech = document.getElementsByName('tech')
+        for (let i = 0; i < inputTech.length; i++) {
+            if (inputTech[i].checked) {
+                tech.push(inputTech[i].value)
+            }
+        }
+        const justi_tech = document.getElementById('justi_tech').value
+
+
+        Swal.fire({
+            title: 'Anda yakin?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#059212',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Batal',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#button_submit').html(`
+                <div class="flex justify-center p-1">
+                    <div class="loader"></div>
+                </div>
+                `)
+                $.ajax({
+                    url: '{% url "create_submission" %}',
+                    type: 'POST',
+                    data: {
+                        employee,
+                        supervisor,
+                        cluster,
+                        commercial: JSON.stringify(commercial),
+                        justi_commercial,
+                        finance: JSON.stringify(finance),
+                        justi_finance,
+                        operation: JSON.stringify(operation),
+                        justi_operation,
+                        tech: JSON.stringify(tech),
+                        justi_tech,
+                    },
+                    headers: {
+                        "X-CSRFTOKEN": "{{ csrf_token }}"
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            title: 'Successfully!',
+                            text: 'Your Submission has been processed successfully..',
+                            icon: 'success',
+                            showConfirmButton: false,
+                        });
+                        setTimeout(() => {
+                            location.reload()
+                        }, 1500)
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Gagal!',
+                            text: 'Terjadi kesalahan: ' + error,
+                            icon: 'error',
+
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>
+
+</html>
