@@ -4,6 +4,7 @@ from .models import Submission
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from asgiref.sync import sync_to_async
+from django.conf import settings
 
 @shared_task
 def add_to_cluster(name, types, justi, cluster):
@@ -37,4 +38,16 @@ async def send_cluster_email(employee, data, role_type):
     msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
     msg.attach_alternative(message, "text/html")
     await sync_to_async(msg.send)()
+
+
+@shared_task
+def send_message_failed(email):
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+
+    subject = 'Your Submission Access'
+    message = "GAGAL YA"
+    msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
+    msg.attach_alternative(message, "text/html")
+    msg.send()
 

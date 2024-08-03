@@ -36,11 +36,10 @@
     </table>
 
     <div style="display: flex; align-items: center;">
-        <a href="https://submission-access.vercel.app/{% url 'approval_supervisor' id=id types=1%}"
+        <a href="https://submission-access.vercel.app{% url 'approval_supervisor' id=id types=1%}"
             style="padding: 9px; border-radius: 5px; width: 30%; background-color: green; color: white; text-decoration: none; margin-right: 5px; text-align: center;">Accept</a>
-        <a href="https://submission-access.vercel.app/{% url 'approval_supervisor' id=id types=0%}"
+        <a href="https://submission-access.vercel.app{% url 'approval_supervisor' id=id types=0%}"
             style="padding: 9px; border-radius: 5px; width: 30%; background-color: red; color: white; text-decoration: none; margin-left: 5px; text-align: center;">Decline</a>
     </div>
 </body>
-
 </html>

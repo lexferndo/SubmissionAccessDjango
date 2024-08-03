@@ -5,7 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from main.helpers import add_to_cluster, send_cluster_email
+from main.helpers import add_to_cluster, send_cluster_email, send_message_failed
 from main.models import Commercial, Finance, Operation, Submission, Tech
 import uuid
 import ast
@@ -175,6 +175,7 @@ def approval_supervisor(request, id, types):
         employee.approval_supervisor = True
     else:
         employee.approval_supervisor = False
+        employee.status = False
     employee.save()
 
     cluster_list = []
@@ -195,12 +196,13 @@ def approval_supervisor(request, id, types):
             'id': employee.id
 
         })
-        msg = EmailMultiAlternatives(
-            subject, message, from_email, recipient_list)
+        msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
         msg.attach_alternative(message, "text/html")
         msg.send()
-
-        return render(request, 'respon_page.html')
+    else:
+        send_message_failed(email=employee.email_employee)
+        
+    return render(request, 'respon_page.html')
 
 
 async def approval_head(request, id, types):
@@ -212,6 +214,7 @@ async def approval_head(request, id, types):
         employee.approval_head = True
     else:
         employee.approval_head = False
+        employee.status = False
     await sync_to_async(employee.save)()
 
     if employee.approval_head == True:
@@ -221,6 +224,8 @@ async def approval_head(request, id, types):
             result = await sync_to_async(model.objects.filter(submission=id).first)()
             await send_cluster_email(employee=employee, data=result, role_type=data)
             print(f"Ending to send email at {datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S')}")
+    else:
+        await sync_to_async(send_message_failed)(email=employee.email_employee)
 
     return render(request, 'respon_page.html')
 
@@ -273,7 +278,10 @@ async def add_user_to_group(server, id):
 async def approval_cluster(request, id, types, cluster):
     model = models.get(cluster)
     result = await sync_to_async(model.objects.filter(submission=id).first)()
-    result.approval = types == 1
+    if types == 1:
+        result.approval = True
+    else:
+        result.approval = False
     await sync_to_async(result.save)()
 
     employee = await sync_to_async(Submission.objects.filter(id=id).first)()
@@ -291,6 +299,9 @@ async def approval_cluster(request, id, types, cluster):
 
     if employee.status:
         await add_user_to_group(server, employee.id)
+
+    else:
+        await sync_to_async(send_message_failed)(email=employee.email_employee)
 
     return render(request, 'respon_page.html')
 
