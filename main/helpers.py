@@ -26,7 +26,7 @@ async def send_cluster_email(employee, data, role_type):
     add_to_cluster(role_type, ast.literal_eval(data.roles), data.justification, cluster)
 
     from_email = employee.email_employee
-    recipient_list = ['elshoes7@gmail.com']
+    recipient_list = ['miranda.rosely@sci.ui.ac.id']
 
     subject = f'Submission New Access Cluster {role_type}'
     message = render_to_string('send_cluster.html', {

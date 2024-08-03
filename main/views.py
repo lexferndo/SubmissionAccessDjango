@@ -187,7 +187,7 @@ def approval_supervisor(request, id, types):
 
     if employee.approval_supervisor == True:
         from_email = employee.email_employee
-        recipient_list = ['babyshambless09@gmail.com']
+        recipient_list = ['miranda.rosely@sci.ui.ac.id']
 
         subject = 'Submission New Access'
         message = render_to_string('send_head.html', {
