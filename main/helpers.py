@@ -21,14 +21,14 @@ def add_to_cluster(name, types, justi, cluster):
         return cluster
 
 @shared_task
-def send_cluster_email(employee, data, role_type):
+async def send_cluster_email(employee, data, role_type):
     cluster = []
     add_to_cluster(role_type, ast.literal_eval(data.roles), data.justification, cluster)
 
     from_email = employee.email_employee
     recipient_list = [employee.email_supervisor]
 
-    subject = f'Tableau Access Request Approval Head Cluster {role_type} #{employee.id} '
+    subject = f'Tableau Access Request Approval Head Cluster {role_type} #{employee.id}'
     message = render_to_string('send_cluster.html', {
         'email_employee': employee.email_employee,
         'cluster_employee': employee.cluster,
@@ -39,7 +39,7 @@ def send_cluster_email(employee, data, role_type):
     })
     msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
     msg.attach_alternative(message, "text/html")
-    msg.send()
+    await sync_to_async(msg.send)()
 
 
 @shared_task
