@@ -140,3 +140,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TABLEAU_SERVER_URL = os.getenv('TABLEAU_SERVER_URL', 'defaultsecretkey')
+TOKEN_NAME = os.getenv('TOKEN_NAME', 'defaultsecretkey')
+TOKEN_VALUE = os.getenv('TOKEN_VALUE', 'defaultsecretkey')
+SITE_ID = os.getenv('SITE_ID', 'defaultsecretkey')
