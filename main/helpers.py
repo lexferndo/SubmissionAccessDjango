@@ -28,7 +28,7 @@ async def send_cluster_email(employee, data, role_type):
     from_email = employee.email_employee
     recipient_list = [employee.email_supervisor]
 
-    subject = f'Tableau Access Request #{employee.id} Approval Head Cluster {role_type}'
+    subject = f'Tableau Access Request Approval Head Cluster {role_type} #{employee.id} '
     message = render_to_string('send_cluster.html', {
         'email_employee': employee.email_employee,
         'cluster_employee': employee.cluster,
