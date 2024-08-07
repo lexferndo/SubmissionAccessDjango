@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Build the project
-cd project
-
 echo "Creating virtual environment..."
 python3 -m venv /venv
 source /venv/bin/activate
