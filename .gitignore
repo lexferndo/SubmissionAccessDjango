@@ -1,4 +1,4 @@
 .venv
 venv/
-static
+staticfiles_build
 .env

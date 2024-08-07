@@ -32,6 +32,7 @@ async def send_cluster_email(employee, data, role_type):
     message = render_to_string('send_cluster.html', {
         'email_employee': employee.email_employee,
         'cluster_employee': employee.cluster,
+        'direct_supervisor': employee.email_supervisor,
         'cluster': cluster,
         'id': employee.id,
         'cluster_name': role_type

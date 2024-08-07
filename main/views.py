@@ -155,6 +155,7 @@ def create_submission(request):
                     'email_employee': submission.email_employee,
                     'cluster': cluster_list,
                     'cluster_employee': submission.cluster,
+                    'direct_supervisor': submission.email_supervisor,
                     'id': submission.id
                 })
 
@@ -193,6 +194,7 @@ def approval_supervisor(request, id, types):
             'email_employee': employee.email_employee,
             'cluster_employee': employee.cluster,
             'cluster': cluster_list,
+            'direct_supervisor': employee.email_supervisor,
             'id': id
 
         })
