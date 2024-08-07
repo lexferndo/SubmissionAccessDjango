@@ -13,13 +13,9 @@ import ast
 from asgiref.sync import sync_to_async
 import tableauserverclient as TSC
 
-TABLEAU_SERVER_URL = 'https://prod-apnortheast-a.online.tableau.com'
-TOKEN_NAME = 'mirandamnlng'
-TOKEN_VALUE = 'mc5rGZ2xSTKCssOAuV2jQg==:sM2O39nCUNwGxmNTBs4DL8ARCCHeWH4u'
-SITE_ID = 'aspireblocks'
 
-tableau_auth = TSC.PersonalAccessTokenAuth(token_name=TOKEN_NAME, personal_access_token=TOKEN_VALUE, site_id=SITE_ID)
-server = TSC.Server(TABLEAU_SERVER_URL, use_server_version=True)
+tableau_auth = TSC.PersonalAccessTokenAuth(token_name=settings.TOKEN_NAME, personal_access_token=settings.TOKEN_VALUE, site_id=settings.SITE_ID)
+server = TSC.Server(settingsTABLEAU_SERVER_URL, use_server_version=True)
 
 models = {
         'Commercial': Commercial,
@@ -153,7 +149,7 @@ def create_submission(request):
                 from_email = submission.email_employee
                 recipient_list = [submission.email_supervisor]
 
-                subject = f'Tableau Request Approval Supervisor #{submission.id}'
+                subject = f'Tableau Access Request Approval Supervisor #{submission.id}'
                 message = render_to_string('send_supervisor.html', {
                     'email_employee': submission.email_employee,
                     'cluster': cluster_list,
@@ -192,7 +188,7 @@ def approval_supervisor(request, id, types):
         from_email = employee.email_employee
         recipient_list = [employee.email_supervisor]
 
-        subject = f'Tableau Request Approval Head #{id}'
+        subject = f'Tableau Access Request Approval Head #{id}'
         message = render_to_string('send_head.html', {
             'email_employee': employee.email_employee,
             'cluster_employee': employee.cluster,
