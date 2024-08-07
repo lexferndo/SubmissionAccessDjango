@@ -19,12 +19,12 @@
     ],
     "routes": [
         {
-            "src": "/static/",
-            "dest": "/static/"
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
         },
         {
             "src": "/(.*)",
-            "dest": "dash/asgi.py"
+            "dest": "dash/wsgi.py"
         }
     ]
 
