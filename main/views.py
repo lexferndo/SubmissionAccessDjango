@@ -13,10 +13,13 @@ import ast
 from asgiref.sync import sync_to_async
 import tableauserverclient as TSC
 
+TABLEAU_SERVER_URL = 'https://prod-apnortheast-a.online.tableau.com'
+TOKEN_NAME = 'mirandamnlng'
+TOKEN_VALUE = 'mc5rGZ2xSTKCssOAuV2jQg==:sM2O39nCUNwGxmNTBs4DL8ARCCHeWH4u'
+SITE_ID = 'aspireblocks'
 
-
-tableau_auth = TSC.PersonalAccessTokenAuth(token_name=settings.TOKEN_NAME, personal_access_token=settings.TOKEN_VALUE, site_id=settings.SITE_ID)
-server = TSC.Server(settings.TABLEAU_SERVER_URL, use_server_version=True)
+tableau_auth = TSC.PersonalAccessTokenAuth(token_name=TOKEN_NAME, personal_access_token=TOKEN_VALUE, site_id=SITE_ID)
+server = TSC.Server(TABLEAU_SERVER_URL, use_server_version=True)
 
 models = {
         'Commercial': Commercial,
