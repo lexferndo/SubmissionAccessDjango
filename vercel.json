@@ -26,9 +26,6 @@
             "src": "/(.*)",
             "dest": "dash/asgi.py"
         }
-    ],
-    "scripts": {
-        "start": "bash start.sh"
-    }
+    ]
 
 }
