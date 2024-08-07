@@ -21,7 +21,7 @@ def add_to_cluster(name, types, justi, cluster):
         return cluster
 
 @shared_task
-async def send_cluster_email(employee, data, role_type):
+def send_cluster_email(employee, data, role_type):
     cluster = []
     add_to_cluster(role_type, ast.literal_eval(data.roles), data.justification, cluster)
 
@@ -39,7 +39,7 @@ async def send_cluster_email(employee, data, role_type):
     })
     msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
     msg.attach_alternative(message, "text/html")
-    await sync_to_async(msg.send)()
+    msg.send()
 
 
 @shared_task
