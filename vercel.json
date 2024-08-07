@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
         {
-            "src": "dash/wsgi.py",
+            "src": "dash/asgi.py",
             "use": "@vercel/python",
             "config": {
                 "maxLambdaSize": "15mb",
@@ -24,8 +24,11 @@
         },
         {
             "src": "/(.*)",
-            "dest": "dash/wsgi.py"
+            "dest": "dash/asgi.py"
         }
-    ]
+    ],
+    "scripts": {
+        "start": "bash start.sh"
+    }
 
 }

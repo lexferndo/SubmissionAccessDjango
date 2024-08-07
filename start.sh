@@ -1,0 +1,1 @@
+uvicorn dash.asgi:application 
