@@ -15,7 +15,7 @@ import tableauserverclient as TSC
 
 
 tableau_auth = TSC.PersonalAccessTokenAuth(token_name=settings.TOKEN_NAME, personal_access_token=settings.TOKEN_VALUE, site_id=settings.SITE_ID)
-server = TSC.Server(settingsTABLEAU_SERVER_URL, use_server_version=True)
+server = TSC.Server(settings.TABLEAU_SERVER_URL, use_server_version=True)
 
 models = {
         'Commercial': Commercial,
