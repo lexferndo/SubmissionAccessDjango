@@ -26,11 +26,12 @@ async def send_cluster_email(employee, data, role_type):
     add_to_cluster(role_type, ast.literal_eval(data.roles), data.justification, cluster)
 
     from_email = employee.email_employee
-    recipient_list = ['miranda.rosely@sci.ui.ac.id']
+    recipient_list = [employee.email_supervisor]
 
-    subject = f'Submission New Access Cluster {role_type}'
+    subject = f'Tableau Access Request #{employee.id} Approval Head Cluster {role_type}'
     message = render_to_string('send_cluster.html', {
         'email_employee': employee.email_employee,
+        'cluster_employee': employee.cluster,
         'cluster': cluster,
         'id': employee.id,
         'cluster_name': role_type
@@ -45,8 +46,10 @@ def send_message_failed(email):
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
 
-    subject = 'Your Submission Access'
-    message = "GAGAL YA"
+    subject = 'Tableau Access Request Denied'
+    message = render_to_string('send_failed.html', {
+        'recipient_list': email,
+    })
     msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
     msg.attach_alternative(message, "text/html")
     msg.send()

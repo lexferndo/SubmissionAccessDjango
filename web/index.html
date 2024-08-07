@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submission New Access</title>
     <script src="https://cdn.tailwindcss.com/3.4.0"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
 </head>
 
 <style>
+    body {
+        font-family: "Roboto", sans-serif;
+    }
+
     .loader {
         width: 10px;
         padding: 8px;
@@ -32,108 +43,128 @@
     }
 </style>
 
-<body class="bg-[#09263e] text-emerald-500">
-    <div class="px-40 py-24 grid gap-10">
-        <h1 class="text-3xl font-medium text-center">Form Pengajuan</h1>
-        <div class="grid gap-5">
-            <div class="flex flex-col gap-1">
-                <label for="employee" class="font-medium">Email Employee</label>
-                <input type="text" name="employee" id="employee" class="p-1.5 border border-gray-200 rounded-md"
-                    required>
-            </div>
-            <div class="flex flex-col gap-1">
-                <label for="supervisor" class="font-medium">Direct Supervisor</label>
-                <div class="flex items-center gap-2">
-                    <input type="radio" name="supervisor" id="supervisor" value="miranda.rosely@sci.ui.ac.id">
-                    <label>miranda.rosely@sci.ui.ac.id</label>
+<body class="bg-[#09263e] text-white">
+    <div class="bg-[url({% static 'images/bg.png' %})] bg-opacity-10 px-32 py-20">
+        <div class="grid gap-10 bg-black/50 px-8 py-4 rounded-md backdrop-blur-sm">
+            <h1 class="text-3xl font-medium text-center">Tableau Access Request</h1>
+            <div class="grid gap-5">
+                <div class="flex flex-col gap-3">
+                    <label for="employee" class="font-medium">Email Employee</label>
+                    <input type="text" name="employee" id="employee"
+                        class="p-1.5 border border-gray-200 rounded-md bg-transparent focus:outline-emerald-500"
+                        required>
                 </div>
-            </div>
-            <div class="flex flex-col gap-1">
-                <label for="cluster" class="font-medium">Cluster</label>
-                {% for value in cluster%}
-                <div class="flex items-center gap-2">
-                    <input type="radio" name="cluster" id="cluster" value="{{value}}" required>
-                    <label>{{value}}</label>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="flex flex-col gap-1 additional-commercial-roles">
-                <label for="commercial" class="font-medium">Additional Commercial Roles
-                </label>
-                <div class="flex flex-col gap-2">
-                    {% for value in commercial%}
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" name="commercial" id="commercial" value="{{ value }}">
-                        <label>{{ value }}</label>
+                <div class="flex flex-col gap-3">
+                    <label for="supervisor" class="font-medium">Direct Supervisor</label>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <input type="radio" name="supervisor" id="supervisor" value="miranda.rosely@sci.ui.ac.id">
+                            <label>miranda.rosely@sci.ui.ac.id</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="radio" name="supervisor" id="supervisor" value="miranda.rosely@ui.ac.id">
+                            <label>miranda.rosely@ui.ac.id</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="radio" name="supervisor" id="other_supervisor" value="other">
+                            <label>Other</label>
+                        </div>
                     </div>
-                    {% endfor %}
+                    <input type="text" name="input_other_supervisor" id="input_other_supervisor"
+                        class="p-1.5 border border-gray-200 rounded-md bg-transparent focus:outline-emerald-500 w-full hidden">
                 </div>
-            </div>
-            <div class="hidden flex-col gap-1 justi-commercial">
-                <label for="justi_commercial" class="font-medium">Justification for Additional Commercial Roles</label>
-                <input type="text" name="justi_commercial" id="justi_commercial"
-                    class="p-1.5 border border-gray-200 rounded-md">
+                <div class="flex flex-col gap-3">
+                    <label for="cluster" class="font-medium">Cluster</label>
+                    <div class="flex items-center gap-4">
+                        {% for value in cluster%}
+                        <div class="flex items-center gap-2">
+                            <input type="radio" name="cluster" id="cluster" value="{{value}}" required>
+                            <label>{{value}}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="flex flex-col gap-3 additional-commercial-roles">
+                    <label for="commercial" class="font-medium">Additional Commercial Roles
+                    </label>
+                    <div class="flex flex-col gap-2">
+                        {% for value in commercial%}
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" name="commercial" id="commercial" value="{{ value }}">
+                            <label>{{ value }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="hidden flex-col gap-1 justi-commercial">
+                    <label for="justi_commercial" class="font-medium">Justification for Additional Commercial
+                        Roles</label>
+                    <input type="text" name="justi_commercial" id="justi_commercial"
+                        class="p-1.5 border border-gray-200 rounded-md bg-transparent focus:outline-emerald-500">
+                </div>
+
+                <div class="flex flex-col gap-3 additional-finance-roles">
+                    <label for="finance" class="font-medium">Additional Finance Roles
+                    </label>
+                    <div class="flex flex-col gap-2">
+                        {% for value in finance%}
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" name="finance" id="finance" value="{{ value }}">
+                            <label>{{ value }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="hidden flex-col gap-1 justi-finance">
+                    <label for="justi_finance" class="font-medium">Justification for Additional Finance Roles</label>
+                    <input type="text" name="justi_finance" id="justi_finance"
+                        class="p-1.5 border border-gray-200 rounded-md bg-transparent focus:outline-emerald-500">
+                </div>
+
+                <div class="flex flex-col gap-3 additional-operations-roles">
+                    <label for="operation" class="font-medium">Additional Operations Roles
+                    </label>
+                    <div class="flex flex-col gap-2">
+                        {% for value in operation%}
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" name="operation" id="operation" value="{{ value }}">
+                            <label>{{ value }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="hidden flex-col gap-1 justi-operations">
+                    <label for="justi_operation" class="font-medium">Justification for Additional Operations
+                        Roles</label>
+                    <input type="text" name="justi_operation" id="justi_operation"
+                        class="p-1.5 border border-gray-200 rounded-md bg-transparent focus:outline-emerald-500">
+                </div>
+
+                <div class="flex flex-col gap-3 additional-tech-roles">
+                    <label for="tech" class="font-medium">Additional Tech Roles
+                    </label>
+                    <div class="flex flex-col gap-2">
+                        {% for value in tech%}
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" name="tech" id="tech" value="{{ value }}">
+                            <label>{{ value }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="hidden flex-col gap-1 justi-tech">
+                    <label for="justi_tech" class="font-medium">Justification for Additional Tech Roles</label>
+                    <input type="text" name="justi_tech" id="justi_tech"
+                        class="p-1.5 border border-gray-200 rounded-md bg-transparent focus:outline-emerald-500">
+                </div>
             </div>
 
-            <div class="flex flex-col gap-1 additional-finance-roles">
-                <label for="finance" class="font-medium">Additional Finance Roles
-                </label>
-                <div class="flex flex-col gap-2">
-                    {% for value in finance%}
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" name="finance" id="finance" value="{{ value }}">
-                        <label>{{ value }}</label>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="hidden flex-col gap-1 justi-finance">
-                <label for="justi_finance" class="font-medium">Justification for Additional Finance Roles</label>
-                <input type="text" name="justi_finance" id="justi_finance"
-                    class="p-1.5 border border-gray-200 rounded-md">
-            </div>
+            <button id="button_submit" type="button" onclick="EntryData()"
+                class="p-2 bg-emerald-500/80 transtion-all duration-300 hover:bg-emerald-500 rounded-md w-full text-white font-medium">
+                Submit
+            </button>
 
-            <div class="flex flex-col gap-1 additional-operations-roles">
-                <label for="operation" class="font-medium">Additional Operations Roles
-                </label>
-                <div class="flex-col gap-2">
-                    {% for value in operation%}
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" name="operation" id="operation" value="{{ value }}">
-                        <label>{{ value }}</label>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="hidden flex-col gap-1 justi-operations">
-                <label for="justi_operation" class="font-medium">Justification for Additional Operations Roles</label>
-                <input type="text" name="justi_operation" id="justi_operation"
-                    class="p-1.5 border border-gray-200 rounded-md">
-            </div>
-
-            <div class="flex flex-col gap-1 additional-tech-roles">
-                <label for="tech" class="font-medium">Additional Tech Roles
-                </label>
-                <div class="flex flex-col gap-2">
-                    {% for value in tech%}
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" name="tech" id="tech" value="{{ value }}">
-                        <label>{{ value }}</label>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="hidden flex-col gap-1 justi-tech">
-                <label for="justi_tech" class="font-medium">Justification for Additional Tech Roles</label>
-                <input type="text" name="justi_tech" id="justi_tech" class="p-1.5 border border-gray-200 rounded-md">
-            </div>
         </div>
-
-        <button id="button_submit" type="button" onclick="EntryData()"
-            class="p-2 bg-emerald-500/80 transtion-all duration-300 hover:bg-emerald-500 rounded-md w-full text-white font-medium">
-            Submit
-        </button>
-
     </div>
 </body>
 
@@ -142,21 +173,18 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function handleCheckboxChange(checkboxSection, justificationSection, inputName) {
+    function handleCheckboxChange(checkboxSection, justificationSection) {
         const checkboxes = document.querySelectorAll(`${checkboxSection} input[type="checkbox"]`);
         const justification = document.querySelector(justificationSection);
-        const input = document.querySelector(`input[name="${inputName}"]`);
 
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', () => {
                 if (Array.from(checkboxes).some(chk => chk.checked)) {
                     justification.classList.add('flex');
                     justification.classList.remove('hidden');
-                    input.setAttribute('required', 'required');
                 } else {
                     justification.classList.remove('flex');
                     justification.classList.add('hidden');
-                    input.removeAttribute('required');
                 }
             });
         });
@@ -167,6 +195,19 @@
         handleCheckboxChange('.additional-finance-roles', '.justi-finance', 'justi_finance');
         handleCheckboxChange('.additional-operations-roles', '.justi-operations', 'justi_operation');
         handleCheckboxChange('.additional-tech-roles', '.justi-tech', 'justi_tech');
+    });
+
+    const supervisorRadios = document.querySelectorAll('input[name="supervisor"]');
+    const otherSupervisor = document.getElementById('input_other_supervisor');
+
+    supervisorRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radio.id === 'other_supervisor' && radio.checked) {
+                otherSupervisor.classList.remove('hidden');
+            } else {
+                otherSupervisor.classList.add('hidden');
+            }
+        });
     });
 </script>
 
@@ -183,6 +224,7 @@
     function EntryData() {
         const employee = document.getElementById('employee').value
         const supervisor = document.getElementById('supervisor').value
+        const otherSupervisor = document.getElementById('input_other_supervisor').value
         const cluster = document.getElementById('cluster').value
 
         if (!employee || !supervisor || !cluster) {
@@ -192,6 +234,19 @@
                 icon: 'error',
             });
             return;
+        }
+
+        let chooseSupervisor = supervisor
+
+        if (supervisor && supervisor.value === 'other' && !otherSupervisor) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Please specify the "Other" supervisor.',
+                icon: 'error',
+            });
+            return;
+        } else {
+            chooseSupervisor = otherSupervisor
         }
 
         if (!validateForm()) {
@@ -213,6 +268,15 @@
         }
         const justi_commercial = document.getElementById('justi_commercial').value
 
+        if (commercial.length > 0 && !justi_commercial) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Please fill Justification for Additional Commercial!',
+                icon: 'error',
+            });
+            return;
+        }
+
         const finance = []
         const inputFinance = document.getElementsByName('finance')
         for (let i = 0; i < inputFinance.length; i++) {
@@ -221,6 +285,15 @@
             }
         }
         const justi_finance = document.getElementById('justi_finance').value
+
+        if (finance.length > 0 && !justi_finance) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Please fill Justification for Additional Finance!',
+                icon: 'error',
+            });
+            return;
+        }
 
         const operation = []
         const inputOperation = document.getElementsByName('operation')
@@ -231,6 +304,15 @@
         }
         const justi_operation = document.getElementById('justi_operation').value
 
+        if (operation.length > 0 && !justi_operation) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Please fill Justification for Additional Operation!',
+                icon: 'error',
+            });
+            return;
+        }
+
         const tech = []
         const inputTech = document.getElementsByName('tech')
         for (let i = 0; i < inputTech.length; i++) {
@@ -240,15 +322,24 @@
         }
         const justi_tech = document.getElementById('justi_tech').value
 
+        if (tech.length > 0 && !justi_tech) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Please fill Justification for Additional Tech!',
+                icon: 'error',
+            });
+            return;
+        }
+
 
         Swal.fire({
-            title: 'Anda yakin?',
+            title: 'Are You Sure ?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#059212',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Batal',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
         }).then((result) => {
             if (result.isConfirmed) {
                 $('#button_submit').html(`
@@ -261,7 +352,7 @@
                     type: 'POST',
                     data: {
                         employee,
-                        supervisor,
+                        supervisor: chooseSupervisor,
                         cluster,
                         commercial: JSON.stringify(commercial),
                         justi_commercial,

@@ -152,10 +152,11 @@ def create_submission(request):
                 from_email = submission.email_employee
                 recipient_list = [submission.email_supervisor]
 
-                subject = 'Submission New Access'
+                subject = f'Tableau Request Approval Supervisor #{submission.id}'
                 message = render_to_string('send_supervisor.html', {
                     'email_employee': submission.email_employee,
                     'cluster': cluster_list,
+                    'cluster_employee': submission.cluster,
                     'id': submission.id
                 })
 
@@ -187,13 +188,14 @@ def approval_supervisor(request, id, types):
 
     if employee.approval_supervisor == True:
         from_email = employee.email_employee
-        recipient_list = ['miranda.rosely@sci.ui.ac.id']
+        recipient_list = [employee.email_supervisor]
 
-        subject = 'Submission New Access'
+        subject = f'Tableau Request Approval Head #{id}'
         message = render_to_string('send_head.html', {
             'email_employee': employee.email_employee,
+            'cluster_employee': employee.cluster,
             'cluster': cluster_list,
-            'id': employee.id
+            'id': id
 
         })
         msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
