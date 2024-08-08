@@ -62,7 +62,7 @@
                             <label>miranda.rosely@sci.ui.ac.id</label>
                         </div>
                         <div class="flex items-center gap-2">
-                            <input type="radio" name="supervisor" id="supervisor" value="miranda.rosely@ui.ac.id">
+                            <input type="radio" name="supervisor" id="supervisor2" value="miranda.rosely@ui.ac.id">
                             <label>miranda.rosely@ui.ac.id</label>
                         </div>
                         <div class="flex items-center gap-2">
@@ -190,147 +190,94 @@
         });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        handleCheckboxChange('.additional-commercial-roles', '.justi-commercial', 'justi_commercial');
-        handleCheckboxChange('.additional-finance-roles', '.justi-finance', 'justi_finance');
-        handleCheckboxChange('.additional-operations-roles', '.justi-operations', 'justi_operation');
-        handleCheckboxChange('.additional-tech-roles', '.justi-tech', 'justi_tech');
-    });
+    function handleSupervisorChange() {
+        const supervisorRadios = document.querySelectorAll('input[name="supervisor"]');
+        const inputOtherSupervisor = document.getElementById("input_other_supervisor");
 
-    const supervisorRadios = document.querySelectorAll('input[name="supervisor"]');
-    const otherSupervisor = document.getElementById('input_other_supervisor');
-
-    supervisorRadios.forEach(radio => {
-        radio.addEventListener('change', () => {
-            if (radio.id === 'other_supervisor' && radio.checked) {
-                otherSupervisor.classList.remove('hidden');
-            } else {
-                otherSupervisor.classList.add('hidden');
-            }
+        supervisorRadios.forEach(radio => {
+            radio.addEventListener('change', function () {
+                if (radio.value === 'other') {
+                    inputOtherSupervisor.classList.remove("hidden");
+                } else {
+                    inputOtherSupervisor.classList.add("hidden");
+                }
+            });
         });
-    });
-</script>
-
-<script>
-    function validateForm() {
-        const commercialChecked = document.querySelectorAll('.additional-commercial-roles input[type="checkbox"]:checked').length > 0;
-        const financeChecked = document.querySelectorAll('.additional-finance-roles input[type="checkbox"]:checked').length > 0;
-        const operationChecked = document.querySelectorAll('.additional-operations-roles input[type="checkbox"]:checked').length > 0;
-        const techChecked = document.querySelectorAll('.additional-tech-roles input[type="checkbox"]:checked').length > 0;
-
-        return commercialChecked || financeChecked || operationChecked || techChecked;
     }
 
+    function handleClusterChange() {
+        const clusterRadios = document.querySelectorAll('input[name="cluster"]');
+        clusterRadios.forEach(radio => {
+            radio.addEventListener('change', function () {
+                const selectedCluster = document.querySelector('input[name="cluster"]:checked').value;
+                console.log("Selected cluster:", selectedCluster);
+            });
+        });
+    }
+
+    $(document).ready(function () {
+        handleCheckboxChange(".additional-commercial-roles", ".justi-commercial");
+        handleCheckboxChange(".additional-finance-roles", ".justi-finance");
+        handleCheckboxChange(".additional-operations-roles", ".justi-operations");
+        handleCheckboxChange(".additional-tech-roles", ".justi-tech");
+        handleSupervisorChange();
+        handleClusterChange();
+    });
+
     function EntryData() {
-        const employee = document.getElementById('employee').value
-        const supervisor = document.getElementById('supervisor').value
-        const otherSupervisor = document.getElementById('input_other_supervisor').value
-        const cluster = document.getElementById('cluster').value
+        const employee = $("#employee").val();
+        const supervisor = $("input[name='supervisor']:checked").val();
+        const otherSupervisor = $("#input_other_supervisor").val();
+        const cluster = $("input[name='cluster']:checked").val();
+
+        const commercial = [];
+        $("input[name='commercial']:checked").each(function () {
+            commercial.push($(this).val());
+        });
+        const justi_commercial = $("#justi_commercial").val();
+
+        const finance = [];
+        $("input[name='finance']:checked").each(function () {
+            finance.push($(this).val());
+        });
+        const justi_finance = $("#justi_finance").val();
+
+        const operation = [];
+        $("input[name='operation']:checked").each(function () {
+            operation.push($(this).val());
+        });
+        const justi_operation = $("#justi_operation").val();
+
+        const tech = [];
+        $("input[name='tech']:checked").each(function () {
+            tech.push($(this).val());
+        });
+        const justi_tech = $("#justi_tech").val();
 
         if (!employee || !supervisor || !cluster) {
             Swal.fire({
-                title: 'Error!',
-                text: 'Please fill form!',
                 icon: 'error',
+                title: 'Oops...',
+                text: 'Please complete the required fields!',
             });
             return;
         }
 
-        let chooseSupervisor = supervisor
+        const data = {
+            "employee": employee,
+            "supervisor": supervisor === "other" ? otherSupervisor : supervisor,
+            "cluster": cluster,
+            "commercial": commercial,
+            "justi_commercial": justi_commercial,
+            "finance": finance,
+            "justi_finance": justi_finance,
+            "operation": operation,
+            "justi_operation": justi_operation,
+            "tech": tech,
+            "justi_tech": justi_tech
+        };
 
-        if (supervisor && supervisor.value === 'other' && !otherSupervisor) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Please specify the "Other" supervisor.',
-                icon: 'error',
-            });
-            return;
-        } else {
-            chooseSupervisor = otherSupervisor
-        }
-
-        if (!validateForm()) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Please select at least one role from commercial, finance, operation, or tech.',
-                icon: 'error',
-            });
-            return;
-        }
-
-
-        const commercial = []
-        const inputCommercial = document.getElementsByName('commercial')
-        for (let i = 0; i < inputCommercial.length; i++) {
-            if (inputCommercial[i].checked) {
-                commercial.push(inputCommercial[i].value)
-            }
-        }
-        const justi_commercial = document.getElementById('justi_commercial').value
-
-        if (commercial.length > 0 && !justi_commercial) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Please fill Justification for Additional Commercial!',
-                icon: 'error',
-            });
-            return;
-        }
-
-        const finance = []
-        const inputFinance = document.getElementsByName('finance')
-        for (let i = 0; i < inputFinance.length; i++) {
-            if (inputFinance[i].checked) {
-                finance.push(inputFinance[i].value)
-            }
-        }
-        const justi_finance = document.getElementById('justi_finance').value
-
-        if (finance.length > 0 && !justi_finance) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Please fill Justification for Additional Finance!',
-                icon: 'error',
-            });
-            return;
-        }
-
-        const operation = []
-        const inputOperation = document.getElementsByName('operation')
-        for (let i = 0; i < inputOperation.length; i++) {
-            if (inputOperation[i].checked) {
-                operation.push(inputOperation[i].value)
-            }
-        }
-        const justi_operation = document.getElementById('justi_operation').value
-
-        if (operation.length > 0 && !justi_operation) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Please fill Justification for Additional Operation!',
-                icon: 'error',
-            });
-            return;
-        }
-
-        const tech = []
-        const inputTech = document.getElementsByName('tech')
-        for (let i = 0; i < inputTech.length; i++) {
-            if (inputTech[i].checked) {
-                tech.push(inputTech[i].value)
-            }
-        }
-        const justi_tech = document.getElementById('justi_tech').value
-
-        if (tech.length > 0 && !justi_tech) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Please fill Justification for Additional Tech!',
-                icon: 'error',
-            });
-            return;
-        }
-
+        console.log("data", data);
 
         Swal.fire({
             title: 'Are You Sure ?',
@@ -352,8 +299,8 @@
                     type: 'POST',
                     data: {
                         employee,
-                        supervisor: chooseSupervisor,
-                        cluster,
+                        supervisor: supervisor === "other" ? otherSupervisor : supervisor,
+                        cluster: cluster,
                         commercial: JSON.stringify(commercial),
                         justi_commercial,
                         finance: JSON.stringify(finance),
@@ -379,10 +326,9 @@
                     },
                     error: function (xhr, status, error) {
                         Swal.fire({
-                            title: 'Gagal!',
-                            text: 'Terjadi kesalahan: ' + error,
                             icon: 'error',
-
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
                         });
                     }
                 });
@@ -390,5 +336,6 @@
         });
     }
 </script>
+
 
 </html>
